@@ -1,0 +1,16 @@
+import pandas as pd
+
+# Load data from CSV
+csv_file_path = r'C:\us_counties.csv'
+df = pd.read_csv(csv_file_path)
+
+# Split the DataFrame into chunks
+chunk_size = 100000  # Adjust the chunk size as needed
+chunks = [df[i:i + chunk_size] for i in range(0, df.shape[0], chunk_size)]
+
+# Convert and save to XLSX using openpyxl
+xlsx_file_path = r'\us_counties.xlsx'
+with pd.ExcelWriter(xlsx_file_path, engine='openpyxl') as writer:
+    for i, chunk in enumerate(chunks, start=1):
+        sheet_name = f'Sheet{i}'
+        chunk.to_excel(writer, sheet_name=sheet_name, index=False)
