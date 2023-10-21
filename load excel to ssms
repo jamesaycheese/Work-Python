@@ -1,0 +1,20 @@
+import pandas as pd
+import os
+import pyodbc
+
+full_path = os.path.join(r'C:\Users\test1.xlsx') # provide the correct path to your excel file
+full_path
+
+
+
+# Connect to SQL Server with Windows Authentication
+conn = pyodbc.connect(driver='sql server native client 11.0',SERVER='DESKTOP-JB1F03V\SQLEXPRESS',DATABASE='AdventureWorks2012',Trusted_Connection='yes')
+
+from sqlalchemy import create_engine
+
+import urllib
+params=urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=DESKTOP-JB1F03V\SQLEXPRESS;DATABASE=AdventureWorks2012;Trusted_Connection=yes")
+engine = create_engine("mssql+pyodbc:///?odbc_connect=%s" % params)
+
+df= pd.read_excel(full_path,sheet_name='Sheet1')
+df.to_sql('test1',engine, schema='dbo')
