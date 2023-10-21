@@ -1,0 +1,9 @@
+import pandas as pd
+csv_file = r'COVID-19_Vaccinations_in_the_United_States_County.csv'
+df = pd.read_csv(csv_file)
+df
+
+import pandas as pd
+excel_file = r'\COVID-19_Vaccinations_in_the_United_States_County.xlsx' # provide the correct path to your excel file
+df3 = pd.read_excel(excel_file)
+df3
