@@ -1,0 +1,31 @@
+#CPS Cobra txt to csv script 
+#Author:James Kwok
+#Date:6/11/2020
+import pandas as pd
+
+widths =[
+    30,#last name
+    30,#First name
+    10,#Middle name
+    30,#address
+    30,#address 2
+    20,#city
+    6,#State
+    9,#ZIP
+    30,#Division
+    20,#DOB
+    19,#SSN
+    15,#EMPR ID
+    12,#relationship
+    15,#plan type
+    20,#Med plan
+    15,#cobra start
+    20,#coverage start
+    10,#term date
+    50,#status
+    14,#cobra end date
+    
+]
+data = pd.read_fwf(
+    r'L:\CPSCOBRA.txt', widths=widths,header=None)
+data.to_excel(r'L:\CPSCOBRA.xlsx',index = False,header =True)
