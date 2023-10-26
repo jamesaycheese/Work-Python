@@ -1,0 +1,71 @@
+#PDP report txt to csv script 
+#Author:James Kwok
+#Date:6/16/2020
+import pandas as pd
+
+
+data = pd.read_fwf(
+    r"C:\textfile.txt", delimiter =';',header = None)
+data.to_excel(r'C:\ PDP report.xlsx',index = False,header =False)
+
+
+import openpyxl 
+from openpyxl import load_workbook
+wb=openpyxl.load_workbook(r'C:\sample EGWP PDP report.xlsx')
+wb2=openpyxl.load_workbook(r'C:\EGWP Weekly PDP Report Template.xlsx')
+wb3=openpyxl.load_workbook(r'L:\s\Deceased Members 10-16-2023.xlsx')
+sheet= wb['Sheet1']
+sheet2 = wb2['Details']
+sheet4=wb2['PGOLD Death']
+sheet3= wb3['Deceased Members']
+
+rows=20000
+columns = 67 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet2.cell(row=r+1,column=c)
+        j.value=listab[r-1][c-1]
+
+
+
+#save all data into new excel file
+rows=2000
+columns = 6 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet3.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet4.cell(row=r,column=c)
+        j.value=listab[r-1][c-1]
+sheet4.delete_rows(1)
+sheet4.delete_rows(1)
+sheet4.delete_cols(1)
+
+wb2.save(r'L:\ESI\2023 10 16 EGWP PDP report.xlsx')
+
+# show all data
+listab
+
+
+
+
+
+
