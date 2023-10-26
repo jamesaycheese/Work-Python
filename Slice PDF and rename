@@ -1,0 +1,13 @@
+from PyPDF2 import PdfFileWriter, PdfFileReader
+
+inputpdf = PdfFileReader(open(r'H:\October 2023.pdf', "rb"))
+
+for i in range(inputpdf.numPages):
+    output = PdfFileWriter()
+    output.addPage(inputpdf.getPage(i))
+    with open(r'H:\document-page%s.pdf' % i, "wb") as outputStream:
+        output.write(outputStream)
+
+
+import os
+os.rename(r'H:document-page0.pdf', r'H:\name.pdf')
