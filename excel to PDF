@@ -1,0 +1,29 @@
+import jpype
+import asposecells
+jpype.startJVM()
+from asposecells.api import Workbook, FileFormatType , PdfSaveOptions
+# Load Excel file
+workbook = Workbook(r'L:\Payroll.xlsx')
+saveOptions = PdfSaveOptions()
+saveOptions.setOnePagePerSheet(True)
+# Convert Excel to PDF
+workbook.save(r'L:\Payroll.pdf', saveOptions)
+
+
+
+#break the pdf per page 
+from PyPDF2 import PdfFileWriter, PdfFileReader
+
+inputpdf = PdfFileReader(open(r'L:\Payroll.pdf', "rb"))
+
+for i in range(inputpdf.numPages):
+    output = PdfFileWriter()
+    output.addPage(inputpdf.getPage(i))
+    with open(r'L:\Payroll\document-page%s.pdf' % i, "wb") as outputStream:
+        output.write(outputStream)
+
+
+#width change
+
+from IPython.display import display, HTML
+display(HTML("<style>.container { width:70% !important; }</style>"))
