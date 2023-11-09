@@ -1,0 +1,256 @@
+#PDP report txt to csv script 
+#Author:James Kwok
+#Date:6/16/2020
+import pandas as pd
+
+
+data = pd.read_fwf(
+    r"C:\Users\jamesk\Downloads\ED16615P2_16615_NCA_NCT_NGN_NUI_20231105063503.txt", delimiter =';',header = None)
+data.to_excel(r'C:\Users\jamesk\Downloads\sample EGWP PDP report.xlsx',index = False,header =False)
+
+import openpyxl 
+from openpyxl import load_workbook
+wb=openpyxl.load_workbook(r'C:\Users\jamesk\Downloads\sample EGWP PDP report.xlsx')
+wb2=openpyxl.load_workbook(r'C:\Users\jamesk\Downloads\EGWP Weekly PDP Report Template.xlsx')
+wb3=openpyxl.load_workbook(r'L:\Death Master\PGold DOD Reports\Deceased Members 11-06-2023.xlsx')
+sheet= wb['Sheet1']
+sheet2 = wb2['Details']
+sheet4=wb2['PGOLD Death']
+sheet3= wb3['Deceased Members']
+
+rows=20000
+columns = 66 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+
+    #copy sheet 
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+    #paste sheet to sheet2 details
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet2.cell(row=r+1,column=c)
+        j.value=listab[r-1][c-1]
+
+rows=2000
+columns = 6 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+    #copy deceased memebers from dod
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet3.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+    #paste to pgold death sheet4 
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet4.cell(row=r,column=c)
+        j.value=listab[r-1][c-1]
+sheet4.delete_rows(1)
+sheet4.delete_rows(1)
+sheet4.delete_cols(1)
+
+wb2.save(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+
+import pandas as pd
+PDP1 = pd.read_excel(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 10 30 EGWP PDP report.xlsx', sheet_name='Details')
+
+
+import pandas as pd
+PDP2 = pd.read_excel(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx', sheet_name='Details')
+
+PDP1.loc[:,'Op. Dte'].max()
+
+PDP2.loc[:,'Op. Dte'].max()
+
+#Medicare A 
+A=PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 8) & (PDP2['TRR'] =='079') ]
+A
+
+#Medicare B
+B=PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 8) & (PDP2['TRR'] == '081') ]
+B
+
+#Disenrollment 
+O=PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 16) & (PDP2['Date of Death'] =='        ') ]
+O
+
+D=PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 16) & (PDP2['Date of Death'] !='        ') ]
+D
+
+import openpyxl 
+from openpyxl import load_workbook
+
+wb2=openpyxl.load_workbook(r'C:\Users\JamesK\Downloads\test.xlsx')
+
+wb2['Sheet1'].delete_rows(1, sheet.max_row)
+
+sheet2 = wb2['Sheet1']
+
+
+
+wb2.save(r'C:\Users\JamesK\Downloads\test.xlsx')
+
+Medicare_A = pd.read_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1')
+
+filtered_data =PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 8) & (PDP2['TRR'] =='079') ]
+
+
+combined_data=pd.concat([Medicare_A,filtered_data])
+combined_data.to_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1', index=False)
+
+import openpyxl 
+from openpyxl import load_workbook
+wb=openpyxl.load_workbook(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2=openpyxl.load_workbook(r'C:\Users\JamesK\Downloads\test.xlsx')
+
+
+sheet= wb['A']
+sheet2 = wb2['Sheet1']
+
+
+
+rows=50
+columns = 66 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+    #copy a
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet2.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+    #paste to a
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet.cell(row=r,column=c)
+        j.value=listab[r-1][c-1]
+
+
+wb.save(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2['Sheet1'].delete_rows(1, sheet.max_row)
+
+Medicare_B = pd.read_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1')
+
+filtered_data =PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 8) & (PDP2['TRR'] == '081') ]
+
+
+combined_data=pd.concat([Medicare_A,filtered_data])
+combined_data.to_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1', index=False)
+
+import openpyxl 
+from openpyxl import load_workbook
+wb=openpyxl.load_workbook(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2=openpyxl.load_workbook(r'C:\Users\JamesK\Downloads\test.xlsx')
+
+sheet= wb['B']
+sheet2 = wb2['Sheet1']
+
+rows=50
+columns = 66 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+    #copy b
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet2.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+    #paste b 
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet.cell(row=r,column=c)
+        j.value=listab[r-1][c-1]
+
+
+wb.save(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2['Sheet1'].delete_rows(1, sheet.max_row)
+
+Medicare_O = pd.read_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1')
+
+filtered_data =PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 16) & (PDP2['Date of Death'] =='        ') ]
+
+
+combined_data=pd.concat([Medicare_A,filtered_data])
+combined_data.to_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1', index=False)
+
+import openpyxl 
+from openpyxl import load_workbook
+wb=openpyxl.load_workbook(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2=openpyxl.load_workbook(r'C:\Users\JamesK\Downloads\test.xlsx')
+
+
+sheet= wb['O']
+sheet2 = wb2['Sheet1']
+
+rows=50
+columns = 66 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+    #copy o
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet2.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+    #paste o
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet.cell(row=r,column=c)
+        j.value=listab[r-1][c-1]
+
+
+wb.save(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2['Sheet1'].delete_rows(1, sheet.max_row)
+
+Medicare_D = pd.read_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1')
+
+filtered_data =PDP2.loc[(PDP2['Op. Dte'] >20231028) & (PDP2['Status Code'] == 16) & (PDP2['Date of Death'] !='        ') ]
+
+
+combined_data=pd.concat([Medicare_A,filtered_data])
+combined_data.to_excel(r'C:\Users\JamesK\Downloads\test.xlsx', sheet_name='Sheet1', index=False)
+
+import openpyxl 
+from openpyxl import load_workbook
+wb=openpyxl.load_workbook(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2=openpyxl.load_workbook(r'C:\Users\JamesK\Downloads\test.xlsx')
+
+
+sheet= wb['PDP Death']
+sheet2 = wb2['Sheet1']
+
+rows=50
+columns = 66 
+
+listab=[]
+for i in range(1,rows+1):
+    listab.append([])
+    #copy d
+for r in range(1,rows+1):
+    for c in range (1,columns+1):
+        e=sheet2.cell(row=r,column=c)
+        listab[r-1].append(e.value)
+    #paste d
+for r in range(1,rows+1):
+    for c in range(1,columns+1):
+        j=sheet.cell(row=r,column=c)
+        j.value=listab[r-1][c-1]
+        
+        
+sheet.delete_cols(32,66)
+sheet.delete_cols(1,15)
+sheet['Q2'] ="=VLOOKUP(A2,'PGOLD Death'!$A$2:$D$1000,4,FALSE)"
+
+wb.save(r'L:\ESI\PDP Weekly Reports\2023 Reports\2023 11 07 EGWP PDP report.xlsx')
+wb2['Sheet1'].delete_rows(1, sheet.max_row)
+
